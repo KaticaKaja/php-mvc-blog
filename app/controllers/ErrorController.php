@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-class Error extends Controller{
+class ErrorController extends Controller{
 
     public function notfound()
     {
@@ -11,7 +11,8 @@ class Error extends Controller{
         $this->view("notfound");
     }
 
-    public function notauthorized(){
-
+    public function badrequest(){
+        \http_response_code(400);
+        $this->view("badrequest");
     }
 }

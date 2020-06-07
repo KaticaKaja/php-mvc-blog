@@ -2,7 +2,6 @@
 namespace App\Core;
 class Route {
     
-    protected static $validRoutes  = array();
     protected $namespace = "App\Controllers\\";
     protected $currentController;
     protected $currentMethod;
@@ -15,7 +14,7 @@ class Route {
         
         if(!\method_exists($this->currentController, $this->currentMethod)){
             $this->currentMethod = "notfound";
-            $this->currentController = $this->namespace."Error";
+            $this->currentController = $this->namespace."ErrorController";
             $this->currentController = new $this->currentController;
         }
     
@@ -28,9 +27,12 @@ class Route {
             $url = \explode('/',$request);
             if(isset($url[0]) && \file_exists(\APPROOT.'\/controllers/'.ucfirst($url[0]).'.php')){
                 $this->currentController = $this->namespace.ucfirst($url[0]);
+                // echo "usao u setovan kontroler<br>";
+                // echo $this->currentController;
             }
             else{
-                $this->currentController = $this->namespace."Error";
+                $this->currentController = $this->namespace."ErrorController";
+                // echo "njema kontroler<br>";
             }
             
             $this->currentMethod = isset($url[1]) ? $url[1] : "index"; //eventualno naci drugo resenje, ako kontroler ne moze da ima defaultni index metod
@@ -39,7 +41,7 @@ class Route {
             $this->params = !empty($url) ? \array_values($url) : [];
         }
         else{
-            $this->currentController ="App\Controllers\Home";
+            $this->currentController ="App\Controllers\Pages";
             $this->currentMethod = "index";
         }
     }

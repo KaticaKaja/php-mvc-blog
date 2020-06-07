@@ -3,7 +3,7 @@
 namespace App\Controllers;
 use App\Core\Database;
 
-class Home extends Controller{
+class HomeTest extends Controller{
 
     // public static function view(){
     //     echo "created view";
@@ -17,9 +17,9 @@ class Home extends Controller{
     {
         $this->db->query('SELECT * FROM posts');
         $posts = $this->db->resultSet();
-        $data = ['posts' => $posts];
+        // $data = ['posts' => $posts];
         // echo \json_encode($data);
-        $this->view('home', $data);
+        $this->view('home');
     }
 
     public function change(){

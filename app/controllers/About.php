@@ -11,7 +11,16 @@ class About extends Controller{
     //     echo "this is about us";
     // }
     public function index($id=1, $nesto = []){
-        $users = \executeQuery('SELECT * FROM users');
+        $users = [
+            [
+                'name' => 'Katica',
+                "age" => 24
+            ],
+            [
+                'name' => 'Bega',
+                "age" => 25
+            ]
+        ];
 
         echo \json_encode($users);
     }

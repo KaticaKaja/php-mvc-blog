@@ -9,41 +9,57 @@ class Post{
         $this->db = Database::getInstance();
     }
 
-    public function getPosts(){
-
-        $this->db->query('SELECT p.*, u.firstName, u.lastName, c.name FROM posts as p INNER JOIN users as u ON p.user_id = u.id  INNER JOIN categories as c ON c.id = p.category_id ORDER BY p.created_at DESC');
-        
-        $results = $this->db->resultSet();
-        return $results;
-    }
-
-    public function onlyPublished($pageNum = 0){
+    public function getPosts($pageNum = 0, $bodyPart = 0){
 
         if(!empty($pageNum)){
+
             $start = ($pageNum - 1) * 4;
-            $this->db->query("SELECT p.*, u.firstName, u.lastName, c.name  FROM posts as p INNER JOIN users as u ON p.user_id = u.id INNER JOIN categories as c ON c.id = p.category_id WHERE p.published = 1 ORDER BY p.created_at DESC LIMIT :start, 4");
+
+            $this->db->query("SELECT p.*, u.firstName, u.lastName, c.name  FROM posts as p INNER JOIN users as u ON p.user_id = u.id INNER JOIN categories as c ON c.id = p.category_id ORDER BY p.created_at DESC LIMIT :start, 4");
+
             $this->db->bind(':start', $start);
+
         }
+
         else{
-             $this->db->query('SELECT p.*, u.firstName, u.lastName, c.name FROM posts as p INNER JOIN users as u ON p.user_id = u.id  INNER JOIN categories as c ON c.id = p.category_id WHERE p.published = 1 ORDER BY p.created_at DESC');
+
+             $this->db->query('SELECT p.*, u.firstName, u.lastName, c.name FROM posts as p INNER JOIN users as u ON p.user_id = u.id  INNER JOIN categories as c ON c.id = p.category_id ORDER BY p.created_at DESC');
+
         }
+
         $results = $this->db->resultSet();
+
         return $results;
+
     }
-    public function publishPost($data){
+
+    // public function onlyPublished($pageNum = 0){
+
+    //     if(!empty($pageNum)){
+    //         $start = ($pageNum - 1) * 4;
+    //         $this->db->query("SELECT p.*, u.firstName, u.lastName, c.name  FROM posts as p INNER JOIN users as u ON p.user_id = u.id INNER JOIN categories as c ON c.id = p.category_id WHERE p.published = 1 ORDER BY p.created_at DESC LIMIT :start, 4");
+    //         $this->db->bind(':start', $start);
+    //     }
+    //     else{
+    //          $this->db->query('SELECT p.*, u.firstName, u.lastName, c.name FROM posts as p INNER JOIN users as u ON p.user_id = u.id  INNER JOIN categories as c ON c.id = p.category_id WHERE p.published = 1 ORDER BY p.created_at DESC');
+    //     }
+    //     $results = $this->db->resultSet();
+    //     return $results;
+    // }
+    // public function publishPost($data){
         
-        $this->db->query('UPDATE posts SET published=:published WHERE id=:id');
+    //     $this->db->query('UPDATE posts SET published=:published WHERE id=:id');
 
-        $this->db->bind(':id',$data['id']);
-        $this->db->bind(':published',$data['published']);
+    //     $this->db->bind(':id',$data['id']);
+    //     $this->db->bind(':published',$data['published']);
 
-        if($this->db->execute()){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+    //     if($this->db->execute()){
+    //         return true;
+    //     }
+    //     else{
+    //         return false;
+    //     }
+    // }
     public function searchPosts($content)
     {
         $this->db->query('SELECT p.id, p.title, p.imgSrc, p.imgAlt, p.created_at, u.firstName, u.lastName, c.name FROM posts as p INNER JOIN users as u ON p.user_id = u.id  INNER JOIN categories as c ON c.id = p.category_id
@@ -55,7 +71,7 @@ class Post{
 
     public function getPostsByCategory($id){
         $this->db->query('SELECT p.*, u.firstName, u.lastName, c.name FROM posts as p INNER JOIN users as u ON p.user_id = u.id  INNER JOIN categories as c ON c.id = p.category_id
-        WHERE c.id = :id AND p.published = 1 ORDER BY p.created_at DESC');
+        WHERE c.id = :id ORDER BY p.created_at DESC');
         $this->db->bind(':id', $id);
         $results = $this->db->resultSet();
         return $results;
@@ -131,7 +147,7 @@ class Post{
     }
 
     public function topRatedPosts(){
-        $this->db->query('SELECT p.*, SUM(rated_value) as sumValue FROM `rating_posts` as rp INNER JOIN posts as p ON p.id = rp.post_id WHERE p.published = 1 GROUP BY post_id ORDER BY sumValue DESC LIMIT 3');
+        $this->db->query('SELECT p.*, SUM(rated_value) as sumValue FROM `rating_posts` as rp INNER JOIN posts as p ON p.id = rp.post_id GROUP BY post_id ORDER BY sumValue DESC LIMIT 3');
         $results = $this->db->resultSet();
         return $results;
     }

@@ -22,7 +22,26 @@ class Route {
     }
 
     protected function prepareUrl(){
+        $time = time();
         $request = filter_var(trim(\REQUEST, '/'),\FILTER_SANITIZE_URL);
+        $logFile = \fopen(\APPROOT."\logs\accessLog.txt", "a");
+        $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
+        $content = $time.":".$request.":$userId\n";
+        $exc = ['pages/search', 'pages/page', 'pages/filterpagination'];
+        if(!\in_array($request, $exc)){
+            \fwrite($logFile, $content);
+        }
+            
+        \fclose($logFile);
+        // $vremeSad = time();
+        // $juce = \strtotime("-1 day",$vremeSad);
+        // $pre2 = \strtotime("-2 day", $vremeSad);
+        // $juceLepo = \date("d;M;Y;H;i;s", $juce);
+        // $prekjuceLepo = \date("d;M;Y;H;i;s", $pre2);
+        //upisivanje u pageAcess_log.txt => $request.":".$vreme."\n"; \date("d;M;Y;H;i;s",time());
+        // echo $request.":".$vremeSad;
+        // echo "<br>$juceLepo";
+        // echo "<br>$prekjuceLepo";
         if(!empty($request)){
             $url = \explode('/',$request);
             if(isset($url[0]) && \file_exists(\APPROOT.'\/controllers/'.ucfirst($url[0]).'.php')){

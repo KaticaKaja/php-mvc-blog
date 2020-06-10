@@ -1,5 +1,5 @@
 <?php ob_start();
-
+session_start();
 use App\Core\Route;
 require_once "config/config.php";
 require_once "helpers/redirect.php";

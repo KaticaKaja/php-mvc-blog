@@ -10,8 +10,6 @@
 
         </a>
 
-        <!-- <?=isset($_FILES['photo']) ? $_FILES["photo"]["name"] : ''?> -->
-
         <div class="card card-body bg-light">
 
             <?php flash('post_message'); 
@@ -30,7 +28,7 @@
 
                     <input type="text" name="title" class="form-control <?php echo (!empty($data['title_err'])) ? 'is-invalid': '';?>" value="<?php echo $data['title'];?>">
 
-                    <span class="invalid-feedback"><?php echo $data['title_err']; ?></span>
+                    <span class="text-danger title_err"></span>
 
                 </div>
 
@@ -46,17 +44,7 @@
 
                             <?php 
 
-                            // if($data['category_id'] == $category->id){
-
                                 echo "<option value='$category->id'>$category->name</option>";
-
-                            // }
-
-                            // else{
-
-                            //     echo "<option value='$category->id'>$category->name</option>";
-
-                            // }
 
                             ?>
 
@@ -64,7 +52,7 @@
 
                     </select>
 
-                    <span class="invalid-feedback"><?php echo $data['category_err']; ?></span>
+                    <span class="text-danger category_err"></span>
 
                 </div>
 
@@ -74,28 +62,24 @@
 
                     <textarea id="postBody" name="body" class="form-control <?php echo (!empty($data['body_err'])) ? 'is-invalid': '';?>" ><?php echo $data['body'];?></textarea>
 
-                    <span class="invalid-feedback"><?php echo $data['body_err']; ?></span>
+                    <span class="text-danger body_err"></span>
 
                 </div>
 
                 <div class="form-group d-flex flex-column">
 
-                    <div class="custom-file w-50 mb-3">
+                    <div class="custom-file w-50">
 
-                        <input type="file" class="custom-file-input <?php echo (!empty($data['img_err'])) ? 'is-invalid': '';?>" name="photo" id="postPhoto">
+                        <input type="file" class="custom-file-input" name="photo" id="postPhoto">
 
                         <label class="custom-file-label font-weight-bold" for="customFile">Add an image: </label>
 
-                        <span class="photoErr"><?php //echo $data['img_err']; ?></span>
+                        <span class="text-danger img_err"></span>
 
                     </div>
-
-                    <?php if(!empty($data['imgSrc'])) :?>
-
-                        <img src="<?=$data['imgSrc']; ?>" alt="<?=(empty($data['imgSrc'])) ? '' : $data['title']; ?>" class="mt-3" id="postimg">
-
-                    <?php endif; ?>
-
+                    <div>
+                        <img class="previewphoto mt-2" height="150" src="" alt="">
+                    </div>
                 </div>
 
                 <input type="submit" value="Submit" id="addSubmit" class="btn btn-success">

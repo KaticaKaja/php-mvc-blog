@@ -17,7 +17,7 @@ class Category{
         return $results;
     }
     public function getCategoriesWithPostNum(){
-        $this->db->query('SELECT c.*, COUNT(p.id) as numPosts FROM categories as c INNER JOIN posts as p ON c.id=p.category_id WHERE p.published = 1 GROUP BY c.id');
+        $this->db->query('SELECT c.*, COUNT(p.id) as numPosts FROM categories as c INNER JOIN posts as p ON c.id=p.category_id GROUP BY c.id');
 
         $results = $this->db->resultSet();
         return $results;

@@ -6,6 +6,7 @@ class Posts extends Controller{
     public function __construct(){
         
         if(!isset($_SESSION['user_id'])){
+            \flash("posts_msg", "You have to login first", "alert alert-danger");
             redirect('users/login');
         }
 
@@ -13,7 +14,123 @@ class Posts extends Controller{
         $this->categoryModel = $this->model('Category');
         $this->userModel = $this->model('User');
     }
+    public function testedit($id)
+    {
+        \header('Content-Type: application/json');
+        $post = $this->postModel->getPostById($id);
+        $data = [
+            'id' => $id,
+            'category_id' => $post->category_id,
+            'title' => $post->title,
+            'body' => $post->body,
+            'imgSrc' => $post->imgSrc,
+            'imgAlt' => $post->title,
+            // 'imgType' => end(explode('.',$post->imgSrc))
+        ];
+        $flag = 0;
 
+        $title = $_POST['title'];
+        $category = $_POST['category'];
+        $body = $_POST['body'];
+        $image = isset($_FILES['image']) ? $_FILES['image'] : '';
+        $fileName = isset($_FILES['image']) ? $_FILES['image']['name'] : '';
+        $fileError = isset($_FILES['image']) ? $_FILES['image']['error'] : '';
+        $tmpPath = isset($_FILES['image']) ? $image['tmp_name'] : '';
+        $fileExt = \explode('.', $fileName);
+        $fileActualExt = \strtolower(end($fileExt));
+        $type = isset($image['type']) ? $image['type'] : '';
+        $allowed = ['image/png', 'image/jpeg', 'image/jpg'];
+        $fileSize = isset($_FILES['image']) ? $_FILES['image']['size'] : '';
+
+        $errors = [
+            'title_err' => '',
+            'category_err' => '',
+            'body_err' => '',
+            'img_err' => ''
+        ];
+        if(empty($image)){
+            
+            $flag = 1;
+        }
+        elseif(\in_array($type, $allowed)){
+            if($fileError === 0){
+                
+                if($fileSize < 1000000){
+                    $fileNameNew = \uniqid('', true).'.'.$fileActualExt;
+                    $data['imgSrc'] = /*URLROOT.*/'http://localhost/sajt/public/assets/img/'.$fileNameNew;
+                    $fileDestination = \ROOT.'\public\assets\img\\'.$fileNameNew; //modifikovati na hostingu
+                    \move_uploaded_file($tmpPath, $fileDestination);
+                }
+                else{
+            
+                    $errors["img_err"] = "Your file is too big";
+                }
+            }
+            else{
+                \http_response_code(500);
+                $errors["img_err"] = "There was an error while uploading image file";
+                
+            }
+        }
+        else{
+            
+    
+            $errors["img_err"] = "This file type is not allowed";
+            
+        }
+        if(empty($title)){
+    
+            $errors["title_err"] = "Please enter title";
+            
+        }
+        else if(!\preg_match('/([A-Z][A-z0-9\s]+)/', $title)){
+    
+            $errors["title_err"] = "Bad format";
+            
+        }
+        if(empty($category)){
+    
+            $errors["category_err"] = "Please choose a category";
+            // echo \json_encode($errors);
+        }
+        if(empty($body)){
+    
+            $errors["body_err"] = "Please enter body text";
+            
+        }
+        
+        if(empty($errors['title_err']) && empty($errors['body_err']) && empty($errors['category_err']) && empty($errors['img_err'])){
+            $data = [
+                'id' => $id,
+                'title' => trim($title),
+                'body' => $body,
+                'user_id' => $_SESSION['user_id'],
+                'category_id' => $category,
+                'imgSrc' => empty($flag) ? /*URLROOT.*/'http://localhost/sajt/public/assets/img/'.$fileNameNew : $post->imgSrc,
+                'imgAlt' => trim($title)
+            ];
+            if($this->postModel->updatePost($data)){
+                \http_response_code(200);
+                \flash('post_message', 'Post edited');
+                $msg = 'success';
+                echo \json_encode($msg);
+                //  \redirect('posts'); U JSu URADJENO
+            }
+            else{
+                
+                \http_response_code(500);
+                die('Something went wrong'); //URADITI JS NA 500 STRANU
+                //status code
+            }
+        }
+        else{
+            \http_response_code(422);
+            echo \json_encode($errors);
+        }
+        // \var_dump($_POST);
+        // \var_dump($_FILES);
+        // \var_dump($data);
+    }
     public function test()
     {
         \header('Content-Type: application/json');
@@ -152,7 +269,6 @@ class Posts extends Controller{
         $data = [
             'posts' => $posts
         ];
-
         $this->view('posts/index', $data);
     }
 
@@ -316,6 +432,7 @@ class Posts extends Controller{
 
     }
 
+    
     public function edit($id){
         $categories = $this->categoryModel->getCategories();
         $optional = [
@@ -365,7 +482,7 @@ class Posts extends Controller{
                 }
             }
             else{
-                $data['img_err'] = "This file type is now allowed";
+                $data['img_err'] = "This file type is not allowed";
             }
            
             if(empty($data['title'])){

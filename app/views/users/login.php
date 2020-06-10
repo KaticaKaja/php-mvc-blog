@@ -10,6 +10,8 @@
 
             flash('adminErr_msg'); 
 
+            flash('login_msg');
+            flash('posts_msg');
             ?>
 
             <h2>Login</h2>
@@ -22,9 +24,9 @@
 
                     <label for="email">Email: <sup>*</sup></label>
 
-                    <input type="text" name="email" class="form-control form-control-lg <?php echo (!empty($data['email_err'])) ? 'is-invalid': '';?>" value="<?php echo isset($data['email']) ? $data['email'] : ''; ?>">
+                    <input type="text" name="email" class="form-control form-control-lg">
 
-                    <span class="invalid-feedback"><?php echo $data['email_err']; ?></span>
+                    <span class="email_err text-danger"></span>
 
                 </div>
 
@@ -32,9 +34,10 @@
 
                     <label for="password">Password: <sup>*</sup></label>
 
-                    <input type="password" name="password" class="form-control form-control-lg <?php echo (!empty($data['password_err'])) ? 'is-invalid': '';?>" value="<?php echo isset($data['password']) ? $data['password'] : ''; ?>">
+                    <input type="password" name="password" class="form-control form-control-lg">
 
-                    <span class="invalid-feedback"><?php echo $data['password_err']; ?></span>
+                    <span class="password_err text-danger"></span>
+
 
                 </div>
 
@@ -42,7 +45,7 @@
 
                     <div class="col">
 
-                        <input type="submit" value="Login" class="btn btn-success btn-block">
+                        <input type="submit" id="loginSubmit" value="Login" class="btn btn-success btn-block">
 
                     </div>
 

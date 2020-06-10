@@ -11,11 +11,11 @@ class Pages extends Controller{
     public function index(){
         $value = 1;
         $numOfpostShowing = 4;
-        $postsAll = $this->postModel->onlyPublished();
+        $postsAll = $this->postModel->getPosts();
         $postsNum = count($postsAll); 
         $pages = ($postsNum % $numOfpostShowing != 0) ? (floor($postsNum / $numOfpostShowing) + 1) : (floor($postsNum / $numOfpostShowing));
         $categories = $this->categoryModel->getCategoriesWithPostNum();
-        $posts = $this->postModel->onlyPublished($value);
+        $posts = $this->postModel->getPosts($value);
         $topRated = $this->postModel->topRatedPosts();
         
         $data = [
@@ -53,7 +53,7 @@ class Pages extends Controller{
         header('Access-Control-Allow-Origin: *');
         header('Content-Type: application/json');
         $pageNum = $_POST['id'];
-        $posts = $this->postModel->onlyPublished($pageNum);
+        $posts = $this->postModel->getPosts($pageNum);
         \http_response_code(200);
         echo \json_encode($posts);
     }

@@ -12,11 +12,11 @@ body{
     z-index:9999;
     top: 1%;
 }
-#postimg{
+/* #postimg{
     width: 150px;
     height: 150px;
     border-radius: 0.25rem;
-}
+} */
 #postPhoto{
   cursor: pointer;
 }
@@ -384,6 +384,6 @@ a:hover{
         /* Error Page */
 }
 
-.photoErr {
+/* .errormsg {
   color: red;
-}
+} */

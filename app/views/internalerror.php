@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About us</title>
+    <title>Document</title>
 </head>
 <body>
-    <h1>About us</h1>
+    <h1>Internal errror - 500</h1>
 </body>
 </html>

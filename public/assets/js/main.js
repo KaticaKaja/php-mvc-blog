@@ -160,9 +160,12 @@ $(document).ready(function () {
             }
         });
 
-        $(document).on('click', '#regUser', function(){
-            addUser('users', 'register');
-        });
+        // REGISTRACIJA
+        // $(document).on('click', '#regUser', function(){
+        //     addUser('users', 'register');
+        // });
+
+
         $(document).on('click', '#addPost', function(){
             addPost();
         });
@@ -366,6 +369,9 @@ function editCategory(id,name){
             },
             error: function(xhr, status, error){
                 console.log(xhr.responseText,status,error);
+                if(xhr.status == 500){
+                    window.location = window.location= BASE_URL+`errorcontroller/internalerror`;
+                }
             }
         });
     }
@@ -487,7 +493,7 @@ function editCategory(id,name){
                             }
                         }
                         else{
-                                response = JSON.parse(response);
+                                // response = JSON.parse(response);
                             for(let key in response){
                                 if(response[key] != ''){
 

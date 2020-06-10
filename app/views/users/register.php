@@ -16,7 +16,7 @@
 
                     <input type="text" name="firstName" class="form-control form-control-lg" placeholder="John">
 
-                    <span class="fname text-danger"></span>
+                    <span class="firstName text-danger"></span>
 
                 </div>
 
@@ -26,7 +26,7 @@
 
                     <input type="text" name="lastName" class="form-control form-control-lg" placeholder="Johnson">
 
-                    <span class="lname text-danger"></span>
+                    <span class="lastName text-danger"></span>
 
                 </div>
 
@@ -46,7 +46,7 @@
 
                     <input type="password" name="password" class="form-control form-control-lg" placeholder="At least 6 characters">
 
-                    <span class="passwd text-danger"></span>
+                    <span class="password text-danger"></span>
 
                 </div>
 
@@ -56,13 +56,7 @@
 
                     <input type="password" name="confPasswd" class="form-control form-control-lg" placeholder="Confirm password">
 
-                    <span class="confpasswd text-danger"></span>
-
-                </div>
-
-                <div class="errorsUser my-2">
-
-                  <p class="text-danger d-none">Please fill out everything</p>
+                    <span class="confPasswd text-danger"></span>
 
                 </div>
 

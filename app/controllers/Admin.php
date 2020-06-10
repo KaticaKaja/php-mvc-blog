@@ -159,27 +159,27 @@ class Admin extends Controller{
         }
     }
 
-    public function publish()
-    {
-        $data = [];
-        $data = [
-           'id' => $_POST['id'],
-           'published' => $_POST['publishValue']
-        ];
+    // public function publish()
+    // {
+    //     $data = [];
+    //     $data = [
+    //        'id' => $_POST['id'],
+    //        'published' => $_POST['publishValue']
+    //     ];
 
-        if($this->postModel->publishPost($data)){
-            \flash('publishPost_admin', 'This post is published');
-            \http_response_code(200);
-            $report['msg'] = 'success';
-            echo \json_encode($report);
-        }
-        else{
-            $report['msg'] = 'error';
-            echo \json_encode($report);
-            \http_response_code(500);
-        }
+    //     if($this->postModel->publishPost($data)){
+    //         \flash('publishPost_admin', 'This post is published');
+    //         \http_response_code(200);
+    //         $report['msg'] = 'success';
+    //         echo \json_encode($report);
+    //     }
+    //     else{
+    //         $report['msg'] = 'error';
+    //         echo \json_encode($report);
+    //         \http_response_code(500);
+    //     }
         
-    }
+    // }
     
     public function adduser(){
         if(isset($_POST['submit'])){

@@ -20,61 +20,56 @@
 
             <p>Create a post with this form</p>
 
-            <form action="<?php echo URLROOT; ?>posts/edit/<?=$data['id']; ?>" method="post" enctype="multipart/form-data">
+            <form action="#" method="post" enctype="multipart/form-data">
 
-                <div class="form-group">
+            <div class="form-group">
 
-                    <label for="title" class="font-weight-bold">Title: <sup>*</sup></label>
+            <label for="title" class="font-weight-bold">Title: <sup>*</sup></label>
 
-                    <input type="text" name="title" class="form-control <?php echo (!empty($data['title_err'])) ? 'is-invalid': '';?>" value="<?php echo $data['title']; ?>">
+            <input type="text" name="title" class="form-control <?php echo (!empty($data['title_err'])) ? 'is-invalid': '';?>" value="<?php echo $data['title'];?>">
 
-                    <span class="invalid-feedback"><?php echo $data['title_err']; ?></span>
+            <span class="text-danger title_err"></span>
 
-                </div>
+            </div>
 
-                <div class="form-group">
+            <div class="form-group">
 
-                    <label class="font-weight-bold" for="category">Choose a category: *</label>
+            <label class="font-weight-bold" for="category">Choose a category: *</label>
 
-                    <select name="categories" id="category" class="form-control <?php echo (!empty($data['category_err'])) ? 'is-invalid': '';?>">
+            <select name="categories" id="category" class="form-control <?php echo (!empty($data['category_err'])) ? 'is-invalid': '';?>">
 
-                        <option value="0">Choose...</option>
+                <option value="0">Choose...</option>
 
-                        <?php foreach($optional['categoriesList'] as $category): ?>
+                <?php foreach($optional['categoriesList'] as $category): ?>
 
-                            <?php 
+                    <?php 
+                        if($data['category_id'] == $category->id){
+                            echo "<option selected value='$category->id'>$category->name</option>";
+                        }
+                        else{
+                            echo "<option value='$category->id'>$category->name</option>";
+                        }
+                        
 
-                            if($data['category_id'] == $category->id){
+                    ?>
 
-                                echo "<option selected value='$category->id'>$category->name</option>";
+                <?php endforeach; ?>
 
-                            }
+            </select>
 
-                            else{
+            <span class="text-danger category_err"></span>
 
-                                echo "<option value='$category->id'>$category->name</option>";
+            </div>
 
-                            }
+            <div class="form-group">
 
-                            ?>
+            <label class="font-weight-bold" for="body">Body: <sup>*</sup></label>
 
-                        <?php endforeach; ?>
+            <textarea id="postBody" name="body" class="form-control <?php echo (!empty($data['body_err'])) ? 'is-invalid': '';?>" ><?php echo $data['body'];?></textarea>
 
-                    </select>
+            <span class="text-danger body_err"></span>
 
-                    <span class="invalid-feedback"><?php echo $data['category_err']; ?></span>
-
-                </div>
-
-                <div class="form-group">
-
-                    <label class="font-weight-bold" for="body">Body: <sup>*</sup></label>
-
-                    <textarea id="postBody" name="body" class="form-control <?php echo (!empty($data['body_err'])) ? 'is-invalid': '';?>" ><?php echo $data['body']; ?></textarea>
-
-                    <span class="invalid-feedback"><?php echo $data['body_err']; ?></span>
-
-                </div>
+            </div>
 
                 <div class="form-group d-flex flex-column">
 
@@ -85,14 +80,15 @@
                         <label class="custom-file-label font-weight-bold" for="customFile">Change image: </label>
 
                         <span class="invalid-feedback"><?php echo $data['img_err']; ?></span>
+                        <span class="text-danger img_err"></span>
 
                     </div>
-
-                    <img src="<?=$data['imgSrc']; ?>" alt="<?=(empty($data['imgSrc'])) ? '' : $data['title']; ?>" class="mt-3" id="postimg">
+                        <div><img src="<?=$data['imgSrc']; ?>" alt="<?=(empty($data['imgSrc'])) ? '' : $data['title']; ?>" class="mt-2 previewphoto" height="150"></div>
+                    
 
                 </div>
 
-                <input type="submit" value="Submit" class="btn btn-success">
+                <input type="submit" value="Submit" class="btn btn-success" id="editSubmit" data-id="<?=$data['id']?>">
 
             </form>
 

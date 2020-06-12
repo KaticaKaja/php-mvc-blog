@@ -1,56 +1,21 @@
 // const BASE_URL = "http://restaurants-review.test/";
 $(document).ready(function(){
-    // alert('helou');
-    $("#dugme").click(function(){
-        $.ajax({
-            url: BASE_URL+"home/change",
-            type: 'GET',
-            dataType: 'json',
-            // data: {
-            //     id : postForPublish.postId,
-            //     publishValue : postForPublish.publishValue
-            // },
-            success: function(data){
-                // data = JSON.parse(data);
-                // if(data.msg == 'success'){
-                //     window.location = BASE_URL + `admin`;
-                // }
-                // else{
     
-                // }
-                console.log('ovo je success: ',data);
-                // var html = "";
-                // data.forEach(post => {
-                //     // console.log(post);
-                //     html +=`<h2>${post.title}</h2>
-                //     <p>${post.body}</p>`;                
-                // });
-                // $("#posts").html(html);
-                
-            },
-            error: function(xhr, status, error){
-                window.location = BASE_URL+"notfound";
-                console.log(xhr.status);
-                console.log(status);
-                console.log(error);
-            }
-        });
-    });
-    // window.addEventListener("beforeunload", function (e) {
-    //     $.ajax({
-    //         url: BASE_URL+'users/logout',
-    //         type: 'POST',
-    //         async: false,
-    //         timeout: 2
-    //     });
-    // })
     $("#addSubmit").click(sendpost);
     $("#editSubmit").click(sendpost);
     $("#loginSubmit").click(login);
     $("#regUser").click(register);
     $("#postPhoto").change(photoChange);
+    $("#settingsSubmit").click(settings);
     $("#register .form-group input").blur(clientValidation);
-
+    $("#visits").click(function(){
+        intervalId = setInterval(() => { pageVisits() }, 2000);
+    });
+    let intervalId;
+    $("#visitsPause").click(function(){
+        clearInterval(intervalId);
+    });
+    $("#loggedIn").click(currentlyLoggedIn);
     function photoChange(){
         var image = document.getElementById('postPhoto').files[0];
         if(image){
@@ -184,7 +149,66 @@ $(document).ready(function(){
         
     }
 
+    function settings(event){
+        event.preventDefault();
+        var email = $("input[name='emailNew']").val();
+        var emailReg = /^(\w+(\.|\-)?)*\@\w+(\.com|\.rs)|\.ict.edu.rs$/;
+        var password = $("input[name='passwordNew']").val();
+        var isThisUserAdmin = '';
+        var user_type = event.target.dataset.isadmin;
+        var id = event.target.dataset.id;
+        var flag = 0;
+        if(user_type == 1){
+            isThisUserAdmin = document.querySelector("input[name='admin']").checked;
+        }
+        
+        if(email == '' || password == ''){
+            flag = 0;
+        }
+        else{
+            if(!emailReg.test(email)){
+                $('.errors .email_err').html('Bad email format.');
+                flag = 1;
+            }
+            else{
+                $('.errors .email_err').html('');
+                flag = 0;
+            }
+            if(password.length < 6){
+                $('.errors .passwd_err').html('Password must have 6 or more characters.');
+                flag = 1;
+            }
+            else{
+                $('.errors .passwd_err').html('');
+                flag = 0;
+            }
+        }
 
+        if(flag == 0){
+            $.ajax({
+                url: BASE_URL+`validation/settings/${id}`,
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                  email : email,
+                  password : password,
+                  admin: isThisUserAdmin,
+                  sessionUserType: user_type
+                },
+                success: function(data) {
+                    window.location = BASE_URL+"posts";
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr);
+                    console.log(error);
+                    var errormsg = xhr.responseJSON;
+                    $(".email_err").text(errormsg.email_err);
+                    $(".passwd_err").text(errormsg.password_err);
+                }
+            });
+        }
+
+    }
 
     function login(event){
         event.preventDefault();
@@ -201,9 +225,7 @@ $(document).ready(function(){
               password : password  
             },
             success: function(data) {
-                if(data.msg == 'success'){
-                    window.location = BASE_URL+"posts";
-                }
+                window.location = BASE_URL+"posts";
             },
             error: function(xhr, status, error) {
                 console.log(xhr);
@@ -213,6 +235,47 @@ $(document).ready(function(){
                 $(".password_err").text(errormsg.password_err);
             }
         });
+
+    }
+
+    function currentlyLoggedIn(){
+        $.ajax({
+            url: BASE_URL+`admin/currentlyLoggedIn`,
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+               $(".badge").html(data);
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.status);
+                console.log(error);
+                
+            }
+        });
+    }
+    function pageVisits(){
+        $.ajax({
+            url: BASE_URL+`admin/pagevisits`,
+            type: 'POST',
+            dataType: 'json',
+            success: function(data) {
+                var pages = $(".visits");
+                $.each(pages, function(i, item){
+                    for(const name in data){
+                    if(item.dataset.page == name){
+                        item.textContent = data[name];
+                    }
+                }
+
+                });
+            },
+            error: function(xhr, status, error) {
+                console.log(xhr.status);
+                console.log(error);
+            }
+        });
+       
+        
 
     }
 

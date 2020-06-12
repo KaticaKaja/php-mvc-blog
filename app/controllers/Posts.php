@@ -127,9 +127,6 @@ class Posts extends Controller{
             \http_response_code(422);
             echo \json_encode($errors);
         }
-        // \var_dump($_POST);
-        // \var_dump($_FILES);
-        // \var_dump($data);
     }
     public function test()
     {

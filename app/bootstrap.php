@@ -4,6 +4,7 @@ use App\Core\Route;
 require_once "config/config.php";
 require_once "helpers/redirect.php";
 require_once "helpers/flash.php";
+require_once "helpers/access_log.php";
 require_once "config/autoloading.php";
 new Route();
 // if($_SERVER['QUERY_STRING'] == ''){

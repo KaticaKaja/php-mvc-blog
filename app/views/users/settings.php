@@ -1,3 +1,4 @@
+<?php \flash('settingsErr_msg'); ?>
 <div class="row">
 
     <div class="col-md-6 mx-auto">
@@ -22,9 +23,9 @@
 
                     <label for="email">New email: <sup>*</sup></label>
 
-                    <input type="text" name="emailNew" class="form-control form-control-lg <?php echo (!empty($data['email_err'])) ? 'is-invalid': '';?>" value="<?php echo $data['emailNew']; ?>">
+                    <input type="text" name="emailNew" class="form-control form-control-lg <?php //echo (!empty($data['email_err'])) ? 'is-invalid': '';?>" value="<?php //echo $data['emailNew']; ?>">
 
-                    <span class="invalid-feedback"><?php echo $data['email_err']; ?></span>
+                    <span class="invalid-feedback"><?php //echo $data['email_err']; ?></span>
 
                 </div>
 
@@ -32,9 +33,9 @@
 
                     <label for="password">New Password: <sup>*</sup></label>
 
-                    <input type="password" name="passwordNew" class="form-control form-control-lg <?php echo (!empty($data['password_err'])) ? 'is-invalid': '';?>" value="">
+                    <input type="password" name="passwordNew" class="form-control form-control-lg <?php //echo (!empty($data['password_err'])) ? 'is-invalid': '';?>" value="">
 
-                    <span class="invalid-feedback"><?php echo $data['password_err']; ?></span>
+                    <span class="invalid-feedback"><?php// echo $data['password_err']; ?></span>
 
                 </div>
 
@@ -53,10 +54,13 @@
                 </div>
 
                 <?php endif; ?>
-
+                <div class="form-group errors text-danger">
+                    <span class="email_err"></span><br>
+                    <span class="passwd_err"></span>
+                </div>
                 <div class="form-group">
 
-                    <input type="submit" value="Save changes" class="btn btn-success btn-block">
+                    <input type="submit" value="Save changes" class="btn btn-success btn-block" data-id="<?=$data['id']?>" data-isAdmin="<?=$_SESSION['user_type']?>" id="settingsSubmit">
 
                 </div>
 

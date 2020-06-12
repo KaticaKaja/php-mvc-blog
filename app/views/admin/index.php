@@ -6,6 +6,7 @@
 
   <div class="row">
 
+
   <div class="col-md-3 mb-4">
 
     <div class="nav flex-column nav-pills" id="myTab" role="tablist" aria-orientation="vertical">
@@ -19,7 +20,22 @@
       <!-- <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a> -->
 
     </div>
-
+    <div class="nav flex-column mt-5">
+      <h5 class="border-bottom border-primary">Page visists in the last 24h</h5>
+    <ul class="list-group">
+      <?php foreach ($data['pages'] as $value) : ?>
+        <li class="list-group-item d-flex justify-content-between"><span><?=$value->name?></span><span data-page="<?=$value->name?>" class="visits"><i class="fas fa-sync-alt"></i></span></li>
+        
+      <?php endforeach; ?>
+    </ul>
+    <button type="button" class="mt-2 btn btn-primary" id="visits">Show Visits</button>
+    <button type="button" class="mt-2 btn btn-secondary" id="visitsPause">Pause Counting</button>
+    </div>
+    <div class="nav flex-column mt-5">
+    <button type="button" class="btn btn-info" id="loggedIn">
+      Currently Logged In <span class="badge badge-light"><i class="fas fa-sync-alt"></i></span>
+    </button>
+    </div>
   </div>
 
   <div class="col-md-9">

@@ -1,7 +1,7 @@
 const BASE_URL = "http://restaurants-review.test/";
 $(document).ready(function () {
     $('#myTab a').click(function(){
-        console.log($(this).prop('href'));
+        // console.log($(this).prop('href'));
     });
     tinymce.init({
         selector: '#postBody',
@@ -49,7 +49,7 @@ $(document).ready(function () {
             var catId = parseInt($(this).data('catid'));
             var catName = ($(this)).data('catname');
             $.ajax({
-                url: BASE_URL+"pages/filterpagination",
+                url: BASE_URL+"home/filterpagination",
                 type: 'POST',
                 data: {
                     categoryId : catId
@@ -306,7 +306,7 @@ function editCategory(id,name){
     function search(searchedThing){
         var html = '';
         $.ajax({
-            url: BASE_URL+"pages/search",
+            url: BASE_URL+"home/search",
             type: 'POST',
             data: {
                 content : searchedThing
@@ -378,7 +378,7 @@ function editCategory(id,name){
     /*PAGINATION*/
     function pagination(page){
         $.ajax({
-            url: BASE_URL+`pages/page`,
+            url: BASE_URL+`home/page`,
             type: 'POST',
             data: {
                 id : page

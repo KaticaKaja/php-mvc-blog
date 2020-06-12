@@ -5,12 +5,12 @@ use App\Controllers\Controller;
 
 class Validation extends Controller{
 
-    public static $userId = '';
+    public static $userId;
     
     public function __construct(){
-        if(isset($_SESSION['user_id'])){
-            self::$userId= $_SESSION['user_id'];
-        }
+        // if(isset($_SESSION['user_id'])){
+        //     self::$userId= $_SESSION['user_id'];
+        // }
         $this->userModel = $this->model('User');
         $this->postModel = $this->model('Post');
     }
@@ -160,6 +160,90 @@ class Validation extends Controller{
 
     }
 
+    public function settings($id)
+    {
+        \header('Content-Type: application/json');
+        $datamsg = [
+            'msg' => ''
+        ];
+        if(!Validation::isLoggedIn()){
+            \http_response_code(401);
+            $datamsg['msg'] = 'unauthorized';
+            echo \json_encode($datamsg);
+        }
+        if(!($this->userModel->isAdmin($_SESSION['user_id']) || ($id == $_SESSION['user_id']))){
+            \http_response_code(403);
+            $datamsg['msg'] = 'forbidden';
+            echo \json_encode($datamsg);
+        }
+        $user = $this->userModel->getUserById($id);
+        $email = $_POST['email'];
+        $emailReg = '/^(\w+(\.|\-)?)*\@\w+(\.com|\.rs)|\.ict.edu.rs$/';
+        $password = $_POST['password'];
+        $type_id = $_POST['admin'];
+        $sessionUserType = $_POST['sessionUserType'];
+        $data = [
+            'id' => $id,
+            'email' => '',
+            'password' => '',
+            'type_id' => $user->type_id
+        ];
+        $errors = [];
+        
+        if(!empty($email)){
+            if(!preg_match($emailReg, $email)){
+        
+                $errors['email_err'] = 'Enter a valid e-mail address.';
+            }
+            else if($this->userModel->findUserByEmail($email, $id)){
+
+                $errors['email_err'] = 'Email is already taken.';
+            }
+            else{
+                $data['email'] = $email;
+            }
+        }
+        else{
+            $data['email'] = $user->email;
+        }
+        if(empty($password)){
+            $data['password'] = $user->password;
+        }
+        else{
+    
+            if(strlen($password) < 6){
+
+                $errors['password_err'] = "Password must be at least 6 characters.";
+                
+            }
+            else{
+    
+                $data['password'] = $password;
+                $data['password'] = password_hash($password, PASSWORD_DEFAULT);
+            }
+        }
+        if($sessionUserType == 1){
+            $data['type_id'] = ($type_id == 'false') ? 2 : 1;
+        }
+        
+        if(empty($errors['email_err']) && empty($errors['password_err'])){
+
+            if($this->userModel->updateUser($data)){
+                \http_response_code(204);
+                \flash('settings_msg','Settings updated');
+            }
+            else{
+                $datamsg['msg'] = 'internalerror';
+                \http_response_code(500);
+                echo \json_encode($datamsg);
+            }
+        }
+        else{
+            \http_response_code(422);
+            echo \json_encode($errors);
+        }
+}
+
     private function createUserSession($user){
 
         $ratedPosts = [];
@@ -172,10 +256,10 @@ class Validation extends Controller{
             $ratedPosts[] = (int)$post->post_id;
         }
         $_SESSION['userRatedPosts'] = $ratedPosts;
-        // redirect('posts');
     }
 
     public static function isLoggedIn(){
+        self::$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
         if(self::$userId){
             return true;
         }

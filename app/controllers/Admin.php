@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
 
+use Exception;
+
 class Admin extends Controller{
 
     public function __construct(){
@@ -16,21 +18,57 @@ class Admin extends Controller{
             \flash('adminErr_msg', 'You are NOT an admin', 'alert alert-danger');
             \redirect('posts');
         }
-            
+            $this->navModel = $this->model('Nav');
             $this->postModel = $this->model('Post');
             $this->categoryModel = $this->model('Category');
             $this->allUsers = $this->userModel->getAllUsers();
             $this->allPosts = $this->postModel->getPosts();
             $this->allCategories = $this->categoryModel->getCategories();
+            $this->allPages = $this->navModel->getNav();
             
         
     }
+    public function currentlyLoggedIn(){
+        \header("Content-Type: application/json");
+        $readFile = \file_get_contents(\APPROOT."\logs\loggedInLog.txt");
+        $data = \substr_count($readFile, ";");
+        echo \json_encode($data);
+    }
+    public function pageVisits()
+    {
+        \header("Content-Type: application/json");
+        $readFile = \file_get_contents(\APPROOT."\logs\accessLog.txt");
 
+        $readFileInArray = \explode("\n", $readFile);
+        $filteredArray = [];
+        $pages = [];
+        $skipPages = ['admin/pagevisits'];
+        foreach ($readFileInArray as $row) {
+            $row = \explode(":", $row);
+            if($row[0] >= \strtotime("-1 day", time()) && !\in_array($row[1], $skipPages)){
+                $filteredArray[] = $row;
+                if($row[1] == '' || $row[1] == 'home/index'){
+                    $row[1] = 'home';
+                }
+                if(substr_count($row[1],'/') > 1){
+                    $helpVar = \explode("/", $row[1]);
+                    \array_pop($helpVar);
+                    $row[1] = \implode("/", $helpVar);
+                }
+                $pages[] = $row[1];
+            }
+
+        }
+        $pages = \array_count_values($pages);
+        \http_response_code(200);
+        echo \json_encode($pages);
+    }
     public function index(){
         $data = [
             'users' => $this->allUsers,
             'posts' => $this->allPosts,
-            'categories' => $this->allCategories
+            'categories' => $this->allCategories,
+            'pages' => $this->allPages
         ];
    
         $this->view('admin/index', $data);

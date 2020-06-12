@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-class Pages extends Controller{
+class Home extends Controller{
 
     public function __construct(){
     
@@ -25,7 +25,7 @@ class Pages extends Controller{
             'topRated' => $topRated
         ];
    
-        $this->view('pages/index', $data);
+        $this->view('home/index', $data);
     }
     
     public function filterpagination(){

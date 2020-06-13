@@ -60,11 +60,14 @@
 
                 </div>
 
+                <div class="form-group">
+                    <span class="errorResult"></span>
+                </div>
                 <div class="row mt-2">
 
                     <div class="col">
 
-                        <input type="button" id="regUser" value="Register" class="btn btn-success btn-block send">
+                        <input type="button" id="regUser" value="Register" class="btn btn-success btn-block send" data-page="register">
 
                     </div>
 

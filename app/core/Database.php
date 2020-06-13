@@ -93,8 +93,10 @@ class Database{
                 case "42S02":
                     // echo "There was an error with code: ".$e->getCode().";<br>On the line: ".$e->getLine().";<br>File: ".explode("\\",$e->getFile())[6]."<br>With this message: ".explode(":", $e->getMessage())[1].";";
                     // \redirect("errorcontroller/internalerror");
-                    \http_response_code(500);
+                    // \http_response_code(500);
                 break;
+                case "HY093":
+                    print_r($e->getTrace());
             }
             // echo $e->getMessage();
             die();

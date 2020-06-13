@@ -59,7 +59,7 @@ class Users extends Controller{
 
     public function logout(){
 
-        $content = \file_get_contents(\APPROOT."\Logs\loggedInLog.txt");
+        $content = \file_get_contents(\APPROOT."/logs/loggedInLog.txt");
         
         $id = $_SESSION['user_id'];
         if($id == null){
@@ -67,7 +67,7 @@ class Users extends Controller{
             \redirect("users/login");
         }
         if(strpos($content,"1:$id") !== false){
-            $loggedInLog = fopen(\APPROOT."\Logs\loggedInLog.txt", "w");
+            $loggedInLog = fopen(\APPROOT."/logs/loggedInLog.txt", "w");
             $search = "/1:$id;/";
             $subcontent = \preg_replace($search,"",$content,1);
             \fwrite($loggedInLog, $subcontent);

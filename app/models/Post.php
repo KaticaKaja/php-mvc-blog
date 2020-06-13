@@ -62,7 +62,7 @@ class Post{
     // }
     public function searchPosts($content)
     {
-        $this->db->query('SELECT p.id, p.title, p.imgSrc, p.imgAlt, p.created_at, u.firstName, u.lastName, c.name FROM posts as p INNER JOIN users as u ON p.user_id = u.id  INNER JOIN categories as c ON c.id = p.category_id
+        $this->db->query('SELECT p.id, p.title, p.img_src, p.img_alt, p.created_at, u.firstName, u.lastName, c.name FROM posts as p INNER JOIN users as u ON p.user_id = u.id  INNER JOIN categories as c ON c.id = p.category_id
         WHERE (`title` LIKE :content) OR (`body` LIKE :content)');
         $this->db->bind(':content', '%'.$content.'%');
         $results = $this->db->resultSet();
@@ -87,7 +87,7 @@ class Post{
 
     public function addPost($data){
 
-        $this->db->query('INSERT INTO posts (user_id, category_id, title, body, imgSrc, imgAlt) VALUES(:user_id,:category_id,:title,:body, :imgSrc, :title)');
+        $this->db->query('INSERT INTO posts (user_id, category_id, title, body, img_src, img_alt) VALUES(:user_id,:category_id,:title,:body, :imgSrc, :title)');
         
         $this->db->bind(':user_id',$data['user_id']);
         $this->db->bind(':category_id',$data['category_id']);
@@ -175,7 +175,7 @@ class Post{
 
     public function updatePost($data)
     {
-        $this->db->query('UPDATE posts SET category_id=:category_id, title=:title, body=:body, imgSrc = :imgSrc, imgAlt = :imgAlt WHERE id=:id');
+        $this->db->query('UPDATE posts SET category_id=:category_id, title=:title, body=:body, img_src = :imgSrc, img_alt = :imgAlt WHERE id=:id');
 
         $this->db->bind(':id',$data['id']);
         $this->db->bind(':category_id',$data['category_id']);

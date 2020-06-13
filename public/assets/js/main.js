@@ -78,7 +78,7 @@ $(document).ready(function () {
                         year = d.getFullYear();
                        html+=`<div class="col-md-6 text-lg-left">
                                 <div class="post">
-                                    <a class="post-img" href="${BASE_URL}posts/show/${post.id}"><img height="350" src="${post.imgSrc}" alt="${post.title}">
+                                    <a class="post-img" href="${BASE_URL}posts/show/${post.id}"><img height="350" src="${post.img_src}" alt="${post.title}">
                                     <div class="post-body">
                                         <div class="post-category">
                                             <h5 class="post-category">${post.name}</h5>
@@ -430,85 +430,85 @@ function editCategory(id,name){
         });
     }
     
-    function addUser(controller = '', method=''){
+    // function addUser(controller = '', method=''){
 
-            var nameReg = /^([A-Z][a-z]{2,}(\s|\-)?)*$/; 
-            var emailReg = /^(\w+(\.|\-)?)*\@\w+(\.com|\.rs)|\.ict.edu.rs$/;
-            var fName = $("input[name='firstName']").val();
-            var lName = $("input[name='lastName']").val();
-            var email = $("input[name='email']").val();
-            var password = $("input[name='password']").val();
-            var confPasswd = $("input[name='confPasswd']").val();
-            var flag = 1;
-            $(`#${method} span`).empty();
-            if(fName == '' || lName == '' || email == '' || password == '' || confPasswd == ''){
-                $('.errorsUser p').fadeIn('fast',function(){$(this).removeClass('d-none')});
-                setTimeout(function(){$('.errorsUser p').fadeOut('slow',function(){$(this).addClass('d-none')})}, 1500);
-                flag++;
-            }
-            else{
-                if(!nameReg.test(fName)){
-                    $('.fname').html('Bad format.');
-                    flag++;
-                }
-                if(!nameReg.test(lName)){
-                    $('.lname').html('Bad format.');
-                    flag++;
-                }
-                if(!emailReg.test(email)){
-                    $('.email').html('Bad email format.');
-                    flag++;
-                }
-                if(password.length < 6){
-                    $('.passwd').html('Password must have 6 or more characters.');
-                    flag++;
-                }
-                if(confPasswd !== password){
-                    $('.confpasswd').html('Passwords do not match.');
-                    flag++;
-                }
+    //         var nameReg = /^([A-Z][a-z]{2,}(\s|\-)?)*$/; 
+    //         var emailReg = /^(\w+(\.|\-)?)*\@\w+(\.com|\.rs)|\.ict.edu.rs$/;
+    //         var fName = $("input[name='firstName']").val();
+    //         var lName = $("input[name='lastName']").val();
+    //         var email = $("input[name='email']").val();
+    //         var password = $("input[name='password']").val();
+    //         var confPasswd = $("input[name='confPasswd']").val();
+    //         var flag = 1;
+    //         $(`#${method} span`).empty();
+    //         if(fName == '' || lName == '' || email == '' || password == '' || confPasswd == ''){
+    //             $('.errorsUser p').fadeIn('fast',function(){$(this).removeClass('d-none')});
+    //             setTimeout(function(){$('.errorsUser p').fadeOut('slow',function(){$(this).addClass('d-none')})}, 1500);
+    //             flag++;
+    //         }
+    //         else{
+    //             if(!nameReg.test(fName)){
+    //                 $('.fname').html('Bad format.');
+    //                 flag++;
+    //             }
+    //             if(!nameReg.test(lName)){
+    //                 $('.lname').html('Bad format.');
+    //                 flag++;
+    //             }
+    //             if(!emailReg.test(email)){
+    //                 $('.email').html('Bad email format.');
+    //                 flag++;
+    //             }
+    //             if(password.length < 6){
+    //                 $('.passwd').html('Password must have 6 or more characters.');
+    //                 flag++;
+    //             }
+    //             if(confPasswd !== password){
+    //                 $('.confpasswd').html('Passwords do not match.');
+    //                 flag++;
+    //             }
                 
-            }
+    //         }
             
-            if(flag == 1){
-                $.ajax({
-                    url: BASE_URL+`${controller}/${method}`,
-                    type: 'POST',
-                    data: {
-                        firstName: fName,
-                        lastName: lName,
-                        email: email,
-                        password: password,
-                        confPasswd: confPasswd,
-                        submit: true
-                    },
-                    success: function(response){
-                        console.log(response);
-                        if(response == ""){
-                            if(controller == 'users'){
-                                window.location= BASE_URL+`users/login`;
-                            }
-                            else{
-                                window.location= BASE_URL+`${controller}`;
-                            }
-                        }
-                        else{
-                                // response = JSON.parse(response);
-                            for(let key in response){
-                                if(response[key] != ''){
+    //         if(flag == 1){
+    //             $.ajax({
+    //                 url: BASE_URL+`${controller}/${method}`,
+    //                 type: 'POST',
+    //                 data: {
+    //                     firstName: fName,
+    //                     lastName: lName,
+    //                     email: email,
+    //                     password: password,
+    //                     confPasswd: confPasswd,
+    //                     submit: true
+    //                 },
+    //                 success: function(response){
+    //                     console.log(response);
+    //                     if(response == ""){
+    //                         if(controller == 'users'){
+    //                             window.location= BASE_URL+`users/login`;
+    //                         }
+    //                         else{
+    //                             window.location= BASE_URL+`${controller}`;
+    //                         }
+    //                     }
+    //                     else{
+    //                             // response = JSON.parse(response);
+    //                         for(let key in response){
+    //                             if(response[key] != ''){
 
-                                    $('.errorsUser').html(`<p class="text-danger">${response[key]}</p>`);
-                                }
-                            }
-                        }
+    //                                 $('.errorsUser').html(`<p class="text-danger">${response[key]}</p>`);
+    //                             }
+    //                         }
+    //                     }
                         
-                    },
-                    error: function(xhr, status, error){
-                        console.log(xhr.status);
-                    }
-                });
-            }
-    }  
+    //                 },
+    //                 error: function(xhr, status, error){
+    //                     console.log(xhr.status);
+    //                 }
+    //             });
+    //         }
+    // }  
 
       function addPost(){
 

@@ -24,34 +24,35 @@ class Validation extends Controller{
         $password = trim($_POST['password']);
         
         $data = [
-            'email'=> $email,
-            'password'=> $password,
-            'email_err'=> '',
-            'password_err'=> '',
+            // 'email'=> $email,
+            // 'password'=> $password,
             'msg' => ''
-
+        ];
+        $errors = [
+            'email_err'=> '',
+            'password_err'=> ''
         ];
         if(!preg_match($emailReg, $email) || empty($email)){
-            $data['email_err'] = 'Enter a valid e-mail address.';
+            $errors['email_err'] = 'Enter a valid e-mail address.';
         }
         if(empty($password) || strlen($password) < 6){
-            $data['password_err'] = 'Password must be at least 6 characters.';
+            $errors['password_err'] = 'Password must be at least 6 characters.';
         }
 
         if($this->userModel->findUserByEmail($email)){
             //user found
         }
         else{
-            $data['email_err'] = "User not found";
+            $errors['email_err'] = "User not found";
         }
 
-        if(empty($data['email_err']) && empty($data['password_err'])){
+        if(empty($errors['email_err']) && empty($errors['password_err'])){
             $loggedInUser = $this->userModel->login($email, $password);
 
             if($loggedInUser){
                 // create session
-                $content = \file_get_contents(\APPROOT."\Logs\loggedInLog.txt");
-                $loggedInLog = fopen(\APPROOT."\Logs\loggedInLog.txt", "a");
+                $content = \file_get_contents(\APPROOT."/logs/loggedInLog.txt");
+                $loggedInLog = fopen(\APPROOT."/logs/loggedInLog.txt", "a");
                 // if(strpos($content,"1:$loggedInUser->id") !== false){
                 // }
                 // else{
@@ -68,15 +69,15 @@ class Validation extends Controller{
                 
             }
             else{
-                $data['password_err'] = "Password incorrect";
+                $errors['password_err'] = "Password incorrect";
 
                 \http_response_code(422);
-                echo \json_encode($data);
+                echo \json_encode($errors);
             }
         }
         else{
             \http_response_code(422);
-            echo \json_encode($data);
+            echo \json_encode($errors);
         }
     }
 

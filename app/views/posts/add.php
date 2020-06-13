@@ -20,13 +20,13 @@
 
             <p>Create a post with this form</p>
 
-            <form action="<?php echo URLROOT; ?>posts/test" method="post" enctype="multipart/form-data">
+            <form action="<?php echo URLROOT; ?>posts/addpost" method="post" enctype="multipart/form-data">
 
                 <div class="form-group">
 
                     <label for="title" class="font-weight-bold">Title: <sup>*</sup></label>
 
-                    <input type="text" name="title" class="form-control <?php echo (!empty($data['title_err'])) ? 'is-invalid': '';?>" value="<?php echo $data['title'];?>">
+                    <input type="text" name="title" class="form-control">
 
                     <span class="text-danger title_err"></span>
 
@@ -36,7 +36,7 @@
 
                     <label class="font-weight-bold" for="category">Choose a category: *</label>
 
-                    <select name="categories" id="category" class="form-control <?php echo (!empty($data['category_err'])) ? 'is-invalid': '';?>">
+                    <select name="categories" id="category" class="form-control">
 
                         <option value="0">Choose...</option>
 
@@ -60,7 +60,7 @@
 
                     <label class="font-weight-bold" for="body">Body: <sup>*</sup></label>
 
-                    <textarea id="postBody" name="body" class="form-control <?php echo (!empty($data['body_err'])) ? 'is-invalid': '';?>" ><?php echo $data['body'];?></textarea>
+                    <textarea id="postBody" name="body" class="form-control"></textarea>
 
                     <span class="text-danger body_err"></span>
 

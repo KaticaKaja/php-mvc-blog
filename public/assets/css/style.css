@@ -383,7 +383,32 @@ a:hover{
   }
         /* Error Page */
 }
-
+/* #loggedInLog */
+.btn-info{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.errorResult{
+  color: red;
+}
+.badge{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  min-height: 30px;
+}
+#numberOfUsers, #logger{
+  font-size: 15px;
+}
+.load{
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 /* .errormsg {
   color: red;
 } */

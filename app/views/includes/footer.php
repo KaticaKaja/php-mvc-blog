@@ -1,8 +1,19 @@
 </div>
-<hr class="mt-5">
-    <footer class="mt-5">
+<hr class="mt-3">
+    <footer class="mt-3">
         <div class="container">
             <div class="row">
+                <div class="col-12 d-flex flex-column align-items-center justify-content-center mb-3">
+                <!-- <li class="list-inline-item"> -->
+                    <h5>Author:</h5>
+                    <a href="http://restaurants-review.test/author">
+                        <span class="fa-stack fa-lg">
+                        <i class="fas fa-circle fa-stack-2x"></i>
+                        <i class="fas fa-user-circle fa-stack-1x fa-inverse"></i>
+                        </span>
+                    </a>
+                    <!-- </li> -->
+                </div>
                 <div class="col-lg-8 col-md-10 mx-auto">
                 <ul class="list-inline text-center">
                     <li class="list-inline-item">

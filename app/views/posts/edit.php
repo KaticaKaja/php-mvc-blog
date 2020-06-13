@@ -65,7 +65,7 @@
 
             <label class="font-weight-bold" for="body">Body: <sup>*</sup></label>
 
-            <textarea id="postBody" name="body" class="form-control <?php echo (!empty($data['body_err'])) ? 'is-invalid': '';?>" ><?php echo $data['body'];?></textarea>
+            <textarea id="postBody" name="body" class="form-control" ><?php echo $data['body'];?></textarea>
 
             <span class="text-danger body_err"></span>
 
@@ -75,11 +75,9 @@
 
                     <div class="custom-file w-50">
 
-                        <input type="file" class="custom-file-input <?php echo (!empty($data['img_err'])) ? 'is-invalid': '';?>" name="photo" id="postPhoto">
+                        <input type="file" class="custom-file-input" name="photo" id="postPhoto">
 
                         <label class="custom-file-label font-weight-bold" for="customFile">Change image: </label>
-
-                        <span class="invalid-feedback"><?php echo $data['img_err']; ?></span>
                         <span class="text-danger img_err"></span>
 
                     </div>

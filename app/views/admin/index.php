@@ -2,7 +2,8 @@
 
 <?php flash('adminpost_message'); ?>
 
-<?php flash('admincategory_message'); ?>
+<?php flash('admincategory_message'); 
+?>
 
   <div class="row">
 
@@ -11,11 +12,11 @@
 
     <div class="nav flex-column nav-pills" id="myTab" role="tablist" aria-orientation="vertical">
 
-      <a class="nav-link active" id="users-tab" data-toggle="pill" href="#users" role="tab" aria-controls="users" aria-selected="true">Manage Users</a>
+      <a class="nav-link active menu" id="users-tab" data-toggle="pill" href="#users" role="tab" aria-controls="users" aria-selected="true">Manage Users</a>
 
-      <a class="nav-link" id="posts-tab" data-toggle="pill" href="#posts" role="tab" aria-controls="posts" aria-selected="false">Manage Posts</a>
+      <a class="nav-link menu" id="posts-tab" data-toggle="pill" href="#posts" role="tab" aria-controls="posts" aria-selected="false">Manage Posts</a>
 
-      <a class="nav-link" id="categories-tab" data-toggle="pill" href="#categories" role="tab" aria-controls="categories" aria-selected="false">Manage Categories</a>
+      <a class="nav-link menu" id="categories-tab" data-toggle="pill" href="#categories" role="tab" aria-controls="categories" aria-selected="false">Manage Categories</a>
 
       <!-- <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a> -->
 
@@ -33,7 +34,7 @@
     </div>
     <div class="nav flex-column mt-5">
     <button type="button" class="btn btn-info" id="loggedIn">
-      Currently Logged In <span class="badge badge-light"><i class="fas fa-sync-alt"></i></span>
+      Currently Logged In <span class="badge badge-light"><i id="logger" class="fas fa-sync-alt"></i><span id="numberOfUsers"></span></span>
     </button>
     </div>
   </div>
@@ -266,29 +267,29 @@
 
         <div class="modal-body">
 
-        <form id="adduser" method="POST">
+        <form id="register" action="#" method="post">
 
-                <div class="form-group mb-0">
+            <div class="form-group">
 
                     <label for="firstName">First name: <sup>*</sup></label>
 
                     <input type="text" name="firstName" class="form-control form-control-lg" placeholder="John">
 
-                    <span class="fname text-danger"></span>
+                    <span class="firstName text-danger"></span>
 
                 </div>
 
-                <div class="form-group mb-0">
+                <div class="form-group">
 
                     <label for="lastName">Last name: <sup>*</sup></label>
 
                     <input type="text" name="lastName" class="form-control form-control-lg" placeholder="Johnson">
 
-                    <span class="lname text-danger"></span>
+                    <span class="lastName text-danger"></span>
 
                 </div>
 
-                <div class="form-group mb-0">
+                <div class="form-group">
 
                     <label for="email">Email: <sup>*</sup></label>
 
@@ -298,30 +299,28 @@
 
                 </div>
 
-                <div class="form-group mb-0">
+                <div class="form-group">
 
                     <label for="password">Password: <sup>*</sup></label>
 
                     <input type="password" name="password" class="form-control form-control-lg" placeholder="At least 6 characters">
 
-                    <span class="passwd text-danger"></span>
+                    <span class="password text-danger"></span>
 
                 </div>
 
-                <div class="form-group mb-0">
+                <div class="form-group">
 
                     <label for="confPasswd">Confirm password: <sup>*</sup></label>
 
                     <input type="password" name="confPasswd" class="form-control form-control-lg" placeholder="Confirm password">
 
-                    <span class="confpasswd text-danger"></span>
+                    <span class="confPasswd text-danger"></span>
 
                 </div>
 
-                <div class="errorsUser mt-2">
-
-                  <p class="text-danger d-none">Please fill out everything</p>
-
+                <div class="form-group">
+                    <span class="errorResult"></span>
                 </div>
 
             </form>
@@ -330,7 +329,7 @@
 
         <div class="modal-footer">
 
-            <button form="adduser" id="adminAddU" type="button" class="btn btn-dark send">Add user</button>
+            <button form="adduser" id="adminAddUser" type="button" class="btn btn-dark send" data-page="adminAddUser">Add user</button>
 
         </div>
 
@@ -364,17 +363,15 @@
 
         <div class="modal-body">
 
-          <form id="postForm" enctype="multipart/form-data">
+          <form id="postForm" action="<?php echo URLROOT; ?>posts/addpost" method="post" enctype="multipart/form-data">
 
-              <div class="form-group title">
+              <div class="form-group">
 
                   <label for="title" class="font-weight-bold">Title: <sup>*</sup></label>
 
                   <input type="text" name="title" class="form-control">
 
-                  <span class="invalid-feedback"></span>
-
-                  <span class="titleErr text-danger"></span>
+                  <span class="text-danger title_err"></span>
 
               </div>
 
@@ -388,13 +385,17 @@
 
                       <?php foreach($data['categories'] as $category): ?>
 
-                          <?php echo "<option value='$category->id'>$category->name</option>"; ?>
+                          <?php 
+
+                              echo "<option value='$category->id'>$category->name</option>";
+
+                          ?>
 
                       <?php endforeach; ?>
 
                   </select>
 
-                  <span class="invalid-feedback"></span>
+                  <span class="text-danger category_err"></span>
 
               </div>
 
@@ -402,33 +403,40 @@
 
                   <label class="font-weight-bold" for="body">Body: <sup>*</sup></label>
 
-                  <textarea id="postBody" name="body" class="form-control" ></textarea>
+                  <textarea id="postBody" name="body" class="form-control"></textarea>
 
-                  <span class="invalid-feedback"></span>
+                  <span class="text-danger body_err"></span>
 
               </div>
 
-              <!-- <div class="form-group">
+              <div class="form-group d-flex flex-column">
 
-                  <label class="font-weight-bold" for="photo">Add an image: </label>
+                  <div class="custom-file w-50">
 
-                  <input type="file" class="form-control-file" name="photo" id="postPhoto">
+                      <input type="file" class="custom-file-input" name="photo" id="postPhoto">
 
-              </div> -->
+                      <label class="custom-file-label font-weight-bold" for="customFile">Add an image: </label>
 
+                      <span class="text-danger img_err"></span>
+
+                  </div>
+                  <div>
+                      <img class="previewphoto mt-2" height="150" src="" alt="">
+                  </div>
+              </div>
           </form>
 
-          <div class="errorsPost mt2">
+          <!-- <div class="errorsPost mt2">
 
             <p class="text-danger d-none" id="postErr">All fields are required<p>
 
-          </div>
+          </div> -->
 
         </div>
 
         <div class="modal-footer">
 
-          <button form="postForm" id="addPost" type="button" class="btn btn-dark">Add post</button>
+          <input type="submit" form="postForm" value="Submit" id="addSubmit" class="btn btn-success">
 
         </div>
 

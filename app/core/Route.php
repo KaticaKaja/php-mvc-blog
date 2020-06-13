@@ -14,7 +14,7 @@ class Route {
         
         if(!\method_exists($this->currentController, $this->currentMethod)){
             $this->currentMethod = "notfound";
-            $this->currentController = $this->namespace."ErrorController";
+            $this->currentController = $this->namespace."Errorcontroller";
             $this->currentController = new $this->currentController;
         }
     
@@ -29,11 +29,11 @@ class Route {
 
         if(!empty($request)){
             $url = \explode('/',$request);
-            if(isset($url[0]) && \file_exists(\APPROOT.'\/controllers/'.ucfirst($url[0]).'.php')){
+            if(isset($url[0]) && \file_exists(\APPROOT.'/controllers/'.ucfirst($url[0]).'.php')){
                 $this->currentController = $this->namespace.ucfirst($url[0]);
             }
             else{
-                $this->currentController = $this->namespace."ErrorController";
+                $this->currentController = $this->namespace."Errorcontroller";
                 // echo "njema kontroler<br>";
             }
             

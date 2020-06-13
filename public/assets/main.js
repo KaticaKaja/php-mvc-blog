@@ -5,17 +5,37 @@ $(document).ready(function(){
     $("#editSubmit").click(sendpost);
     $("#loginSubmit").click(login);
     $("#regUser").click(register);
+    $("#adminAddUser").click(register);
     $("#postPhoto").change(photoChange);
     $("#settingsSubmit").click(settings);
     $("#register .form-group input").blur(clientValidation);
     $("#visits").click(function(){
-        intervalId = setInterval(() => { pageVisits() }, 2000);
+        $(".visits i").addClass("load");
+        intervalId = setInterval(() => { 
+            pageVisits() }, 2000);
     });
     let intervalId;
     $("#visitsPause").click(function(){
+        $(".visits i").removeClass("load");
         clearInterval(intervalId);
     });
-    $("#loggedIn").click(currentlyLoggedIn);
+    $("#loggedIn").click(function(e){
+        
+        $('#numberOfUsers').css('display', 'none');
+        // console.log(e.target.querySelector('.numberOfUsers'));
+        $("#logger").css('display', 'block');
+        $("#logger").addClass('load');
+        setTimeout(function(){
+            currentlyLoggedIn(e);
+        },1500);
+        // setTimeout(function(){
+        //     $(".badge i").removeClass("load");
+        // },2000);
+        
+    });
+
+    // console.log($(".menu")[0].href);
+
     function photoChange(){
         var image = document.getElementById('postPhoto').files[0];
         if(image){
@@ -92,8 +112,9 @@ $(document).ready(function(){
     
     function register(event){
         event.preventDefault();
+
         var flag = 0;        
-        var spanErros = document.querySelectorAll('.text-danger');
+        var spanErros = document.querySelectorAll('#register .text-danger');
         var inputs = document.querySelectorAll("#register .form-group input");
         spanErros.forEach(element => {
             if(element.innerText != ''){
@@ -105,7 +126,6 @@ $(document).ready(function(){
                 flag++;
             }
         });
-
         if(flag == 0){
             $.ajax({
                 url: BASE_URL+`validation/register`,
@@ -145,6 +165,15 @@ $(document).ready(function(){
                     }
                 }
             });
+        }
+        else{
+            
+            $(".errorResult").show();
+            $(".errorResult").html("All fields are required");
+            setTimeout(function(){
+                $(".errorResult").hide();
+                $(".errorResult").html("");
+            }, 1500);
         }
         
     }
@@ -238,13 +267,15 @@ $(document).ready(function(){
 
     }
 
-    function currentlyLoggedIn(){
+    function currentlyLoggedIn(e){
         $.ajax({
             url: BASE_URL+`admin/currentlyLoggedIn`,
             type: 'POST',
             dataType: 'json',
             success: function(data) {
-               $(".badge").html(data);
+                $("#logger").removeClass('load');
+                $("#logger").css('display', 'none');
+               $("#numberOfUsers").html(data).css('display', 'block');
             },
             error: function(xhr, status, error) {
                 console.log(xhr.status);
@@ -272,6 +303,9 @@ $(document).ready(function(){
             error: function(xhr, status, error) {
                 console.log(xhr.status);
                 console.log(error);
+                if(xhr.status == 500){
+                    window.location = BASE_URL+"errorcontroller/internalerror";
+                }
             }
         });
        
@@ -284,7 +318,7 @@ $(document).ready(function(){
         var button = event.target;
         var id = event.target.id;
         var postId = button.getAttribute('data-id');
-        var endpoint = (id == 'editSubmit') ? `testedit/${postId}`: 'test';
+        var endpoint = (id == 'editSubmit') ? `editpost/${postId}`: 'addpost';
         var title = $("input[name='title']").val();
         var categories = document.getElementById('category');
         var category = categories.options[categories.selectedIndex].value;
@@ -318,10 +352,18 @@ $(document).ready(function(){
                 console.log(xhr.status);
                 console.log(error);
                 var errormsg = xhr.responseJSON;
+            
                 $(".title_err").text(errormsg.title_err);
                 $(".category_err").text(errormsg.category_err);
                 $(".body_err").text(errormsg.body_err);
                 $(".img_err").text(errormsg.img_err);
+
+                setTimeout(function(){
+                    $(".title_err").text("");
+                    $(".category_err").text("");
+                    $(".body_err").text("");
+                    $(".img_err").text("");
+                }, 2500);
             }
         });
     }

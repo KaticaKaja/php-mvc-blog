@@ -72,7 +72,7 @@
 
                     <div class="post">
 
-                        <a class="post-img" href="<?=URLROOT?>posts/show/<?=$post->id?>"><img height="350" src="<?=$post->imgSrc;?>" alt="<?=$post->imgAlt?>">
+                        <a class="post-img" href="<?=URLROOT?>posts/show/<?=$post->id?>"><img height="350" src="<?=$post->img_src;?>" alt="<?=$post->img_alt?>">
 
                         <div class="post-body">
 
@@ -148,7 +148,7 @@
 
                     <a href="<?=URLROOT?>posts/show/<?=$post->id?>" class="d-flex">
 
-                    <img src="<?=$post->imgSrc?>" class="post-imgSmall" width="200" alt="<?=$post->imgAlt?>">
+                    <img src="<?=$post->img_src?>" class="post-imgSmall" width="200" alt="<?=$post->img_alt?>">
 
                     <div class="text-center ml-4">
 

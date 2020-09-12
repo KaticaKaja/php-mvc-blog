@@ -7,6 +7,7 @@ require_once "helpers/flash.php";
 require_once "helpers/access_log.php";
 require_once "config/autoloading.php";
 new Route();
+
 // if($_SERVER['QUERY_STRING'] == ''){
 //     echo "prazan<br>";
 // }

@@ -1,4 +1,4 @@
-const BASE_URL = "http://restaurants-review.test/";
+const BASE_URL = "http://techtalk.test/";
 $(document).ready(function () {
     $('#myTab a').click(function(){
         // console.log($(this).prop('href'));
@@ -325,6 +325,7 @@ function editCategory(id,name){
                 }
                 else{
                     data.forEach(post => {
+                        console.log(post);
                         d = new Date (post.created_at);
                         months = [
                             'January',
@@ -345,7 +346,7 @@ function editCategory(id,name){
                         html+=`
                         <div class="col-md-6 text-lg-left">
                         <div class="post">
-                            <a class="post-img" href="${BASE_URL}posts/show/${post.id}"><img height="350" src="${post.imgSrc}" alt="${post.title}">
+                            <a class="post-img" href="${BASE_URL}posts/show/${post.id}"><img height="350" src="${post.img_src}" alt="${post.title}">
                             <div class="post-body">
                                 <div class="post-category">
                                     <h5 class="post-category">${post.name}</h5>
@@ -406,7 +407,7 @@ function editCategory(id,name){
                     year = d.getFullYear();
                     html+=`<div class="col-md-6 text-lg-left">
                     <div class="post">
-                        <a class="post-img" href="${BASE_URL}posts/show/${post.id}"><img height="350" src="${post.imgSrc}" alt="">
+                        <a class="post-img" href="${BASE_URL}posts/show/${post.id}"><img height="350" src="${post.img_src}" alt="">
                         <div class="post-body">
                             <div class="post-category">
                                 <h5 class="post-category">${post.name}</h5>
